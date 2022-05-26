@@ -33,4 +33,10 @@ public class TaskController {
     public ResponseEntity<Task> getTaskById(@PathVariable(value = "id") Long id){
         return taskService.findTaskById(id);
     }
+
+    @PutMapping("/tasks/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Task> getTaskById(@PathVariable(value = "id") Long id, @RequestBody Task task){
+        return taskService.updateTaskById(task, id);
+    }
 }
