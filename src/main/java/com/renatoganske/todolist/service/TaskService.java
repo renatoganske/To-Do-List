@@ -2,18 +2,16 @@ package com.renatoganske.todolist.service;
 
 import com.renatoganske.todolist.model.Task;
 import com.renatoganske.todolist.repository.TaskRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TaskService {
 
-    @Autowired
     private TaskRepository taskRepository;
 
 
@@ -26,6 +24,7 @@ public class TaskService {
     }
 
     public ResponseEntity<Task> findTaskById(Long id) {
+
         return taskRepository.findById(id)
                 .map(task -> ResponseEntity.ok().body(task))
                 .orElse(ResponseEntity.notFound().build());
@@ -36,7 +35,7 @@ public class TaskService {
                 .map(taskToUpdate -> {
                     taskToUpdate.setTitle(task.getTitle());
                     taskToUpdate.setDescription(task.getDescription());
-                    taskToUpdate.setDeadline(task.getDeadline());
+                    taskToUpdate.setDeadLine(task.getDeadLine());
                     Task updated = taskRepository.save(taskToUpdate);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());
@@ -44,10 +43,9 @@ public class TaskService {
 
     public ResponseEntity<Object> deleteById(Long id) {
         return taskRepository.findById(id)
-                .map(taskToDelete ->{
+                .map(taskToDelete -> {
                     taskRepository.deleteById(id);
                     return ResponseEntity.noContent().build();
                 }).orElse(ResponseEntity.notFound().build());
-
     }
 }
